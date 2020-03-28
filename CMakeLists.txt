@@ -12,8 +12,18 @@
 
 cmake_minimum_required(VERSION 3.6.0)
 
+if(CMAKE_HOST_WIN32)
+	find_program(GIT_EXECUTABLE
+		NAMES git
+		PATHS "C:/Program Files/Git/cmd" "C:/ProgramData/Git/cmd"
+		NO_SYSTEM_ENVIRONMENT_PATH
+	)
+else()
+	find_package(Git)
+endif()
+	
+message(WARNING ${GIT_EXECUTABLE})
 
-find_package(Git)
 execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --abbrev=0 OUTPUT_VARIABLE infoware_version ERROR_QUIET)
 string(STRIP "${infoware_version}" infoware_version)
 if(infoware_version STREQUAL "")
